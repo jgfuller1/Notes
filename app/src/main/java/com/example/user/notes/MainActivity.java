@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         editText1 = (EditText) findViewById(R.id.editText);
         editText1.setText(readFromFile(this));
-        boldButton = (Button) findViewById(R.id.button_bold);
+        //boldButton = (Button) findViewById(R.id.button_bold);
         boldButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
