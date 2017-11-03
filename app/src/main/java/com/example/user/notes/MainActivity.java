@@ -24,6 +24,7 @@ import java.io.OutputStreamWriter;
 public class MainActivity extends AppCompatActivity {
     private EditText editText1;
     private Button boldButton;
+    private String nonHtml;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +32,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         editText1 = (EditText) findViewById(R.id.editText);
-        editText1.setText(readFromFile(this));
-        //boldButton = (Button) findViewById(R.id.button_bold);
+        editText1.setText(Html.fromHtml(readFromFile(this)));
+        nonHtml = editText1.getText().toString();
+        boldButton = (Button) findViewById(R.id.button_bold);
         boldButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,25 +45,23 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                save();
+                save(nonHtml);
                 Toast.makeText(MainActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void save() {
-        String a = editText1.getText().toString();
-        writeToFile(a, this);
+    private void save(String text) {
+        nonHtml = editText1.getText().toString();
+        writeToFile(text, this);
     }
-
     private void setBold(){
         int startSelection = editText1.getSelectionStart();
         int endSelection = editText1.getSelectionEnd();
         String selection = editText1.getText().toString().substring(startSelection, endSelection);
         selection = "<b>" +selection+"</b>";
+        nonHtml = editText1.getText().toString().substring(0,startSelection) + selection + editText1.getText().toString().substring(endSelection);
         editText1.setText(Html.fromHtml(editText1.getText().toString().substring(0,startSelection) + selection + editText1.getText().toString().substring(endSelection)));
-       // String sourceString = "<b>" + id + "</b> " + name;
-       // mytextview.setText(Html.fromHtml(sourceString));
     }
 
     private void writeToFile(String data,Context context) {
